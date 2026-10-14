@@ -1,0 +1,1164 @@
+/* ============================================
+   СБРОС И БАЗОВЫЕ СТИЛИ
+   ============================================ */
+
+:root {
+  --bg: #F9F1D6;
+  /* фон */
+  --dark: #333;
+  /* силуэт / контур */
+  --green: #B2E0C5;
+  /* кнопка */
+  --tray: #f7f7f5;
+  --active: #72D0F9;
+
+  --wrong: #ff8989;
+  /* красный неверный ответ */
+  --correct: #90d8a0;
+  /* зелёный верный ответ */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+svg,
+img {
+  -webkit-user-drag: none;
+  pointer-events: auto;
+}
+
+body {
+  font-family: 'Comic Sans MS', 'Marker Felt', sans-serif;
+  background: var(--bg);
+  overflow: hidden;
+  height: 100dvh;
+  width: 100vw;
+}
+
+/* ============================================
+   ЭКРАНЫ (переключаются)
+   ============================================ */
+.screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.screen.active {
+  display: flex;
+  opacity: 1;
+  flex-direction: column;
+  overflow-y: auto;
+  /* 🆕 экран может скроллиться */
+  -webkit-overflow-scrolling: touch;
+  /* плавный скролл на телефонах */
+}
+
+/* ============================================
+   КНОПКА ДОМОЙ, НАЗАД
+   ============================================ */
+.home-toggle,
+.btn-back {
+  /* Фиксированное положение в ЛЕВОМ верхнем углу */
+  position: fixed;
+  top: 12px;
+  z-index: 100;
+  /* Размеры и форма */
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  /* Стиль */
+  background: var(--green);
+  border: 2px solid var(--dark);
+  cursor: pointer;
+  /* Центрируем иконку */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Плавные переходы */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/*расположение слева*/
+
+.btn-back {
+  left: 72px;
+}
+
+.home-toggle {
+  left: 12px;
+}
+
+/*при наведении*/
+.home-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 0 var(--dark);
+  background: var(--tray);
+}
+
+.btn-back:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 0 var(--dark);
+  background: var(--tray);
+}
+
+/*кнопка активна*/
+.home-toggle:active {
+  transform: scale(0.95);
+  box-shadow: none;
+
+}
+
+.btn-back:active {
+  transform: scale(0.95);
+  box-shadow: none;
+}
+
+/*спрятанный домик в меню*/
+.home-toggle.hidden {
+  display: none;
+}
+
+/* На мобилке — чуть меньше */
+@media (max-width: 500px) {
+
+  #screen-game .home-toggle,
+  .btn-back {
+    top: 12px;
+    left: 12px;
+    width: 42px;
+    height: 42px;
+  }
+
+  #screen-game .home-toggle__icon,
+  .btn-back__icon {
+    font-size: 24px;
+  }
+}
+
+
+/* ============================================
+   ПАНЕЛЬ ЗВУКА (правый верхний угол)
+   ============================================ */
+.sound-panel {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+}
+
+.volume-slider {
+  width: 100px;
+  accent-color: var(--green);
+  pointer-events: auto;
+}
+
+
+.music-toggle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--green);
+  border: 2px solid var(--dark);
+  cursor: pointer;
+  flex-shrink: 0;
+  /* кнопка не сжимается */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.music-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 0 var(--dark);
+  background: var(--tray);
+}
+
+
+.music-toggle:active {
+  transform: scale(0.95);
+  box-shadow: none;
+}
+
+
+.music-toggle.muted {
+  background: var(--green);
+  opacity: 0.7;
+}
+
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--green);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* На мобилке — компактнее */
+@media (max-width: 500px) {
+  .sound-panel {
+    top: 12px;
+    right: 12px;
+    gap: 6px;
+  }
+
+  .music-toggle {
+    width: 42px;
+    height: 42px;
+  }
+
+
+  @media (max-width:320px) {
+    .music-toggle__icon svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  #volumeSlider {
+    width: 72px;
+    height: 16px;
+    background: var(--green);
+
+  }
+}
+
+
+/* --- SVG внутри кнопок звука, дома, назад --- */
+.music-toggle__icon,
+.hint-btn_icon,
+.home-toggle__icon,
+.btn-back__icon,
+.tool__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+}
+
+.music-toggle__icon svg,
+.home-toggle__icon svg,
+.hint-btn__icon svg,
+.btn-back__icon svg,
+.tool__icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@media (max-width: 500px) {
+
+  .music-toggle__icon,
+  .home-toggle__icon,
+  .hint-toggle__icon,
+  .btn-back__icon,
+  .tool__icon {
+    width: 24px;
+    height: 24px;
+  }
+
+}
+
+
+/* КНОПКА "ГОТОВО" */
+.done-btn {
+  position: fixed;
+  right: 12px;
+  z-index: 100;
+  bottom: 14px;
+  padding: 12px 28px;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: inherit;
+  color: var(--dark);
+  background: var(--green);
+  border: 3px solid var(--dark);
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.done-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 0 var(--dark);
+  background: var(--tray);
+}
+
+
+.done-btn.hidden {
+  display: none;
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .done-btn {
+    bottom: 8px;
+    padding: 8px 20px;
+    font-size: 16px;
+  }
+}
+
+
+/* ============================================
+   ПАНЕЛЬ ИНСТРУМЕНТОВ (слева вертикально)
+   ============================================ */
+.tools-panel {
+  position: fixed;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--tray);
+  padding: 12px 10px;
+  border-radius: 24px;
+  border: 2px solid var(--dark);
+  box-shadow: 0 4px 0 var(--dark);
+}
+
+.tool-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--green);
+  border: 2px solid var(--dark);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tool-btn:hover {
+  transform: scale(1.1);
+  border-color: var(--dark);
+}
+
+
+.tool-btn.active {
+  background: var(--tray);
+  border-color: var(--dark);
+  box-shadow: 0 2px 0 var(--dark);
+  transform: scale(0.95);
+}
+
+/*Строка скрытия*/
+
+.tools-panel.hidden,
+.palette.hidden {
+  display: none !important;
+}
+
+
+/* ============================================
+   ПАЛИТРА (справа в 2 колонки)
+   ============================================ */
+.palette {
+  position: fixed;
+  right: 12px;
+  top: 110px;
+  /* ← зазор от ползунка звука */
+  z-index: 100;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  /* ← одинаковый зазор по вертикали и горизонтали */
+  padding: 12px;
+  background: var(--tray);
+  border-radius: 20px;
+  border: 3px solid var(--dark);
+  box-shadow: 0 4px 0 var(--dark);
+}
+
+.color-swatch {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: transform 0.2s, border-color 0.2s;
+  box-shadow: 0 2px 4px var(--dark);
+}
+
+.color-swatch:hover {
+  transform: scale(1.15);
+}
+
+.color-swatch.selected {
+  border-color: var(--dark);
+  transform: scale(1.2);
+  box-shadow: 0 4px 8px var(--dark);
+}
+
+/* ============================================
+   ОБЛАСТЬ РИСУНКА (по центру)
+   ============================================ */
+.painting-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 100px 20px 100px;
+  /* отступы под инструменты и палитру */
+  min-height: 0;
+}
+
+.painting-container {
+  width: 100%;
+  height: 100%;
+  max-width: min(80vh, 80vw);
+  max-height: min(80vh, 80vw);
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.painting-container svg {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+}
+
+.painting-container [id^="part-"] {
+  cursor: pointer;
+  transition: fill 0.15s ease;
+}
+
+#brush-canvas {
+  position: absolute;
+  z-index: 10;
+  /* Должен быть больше, чем у SVG */
+}
+
+/* ============================================
+   ГЛАВНОЕ МЕНЮ
+   ============================================ */
+#screen-menu {
+  background: var(--bg);
+  padding: 64px 24px 40px;
+  /* сверху — воздух под кнопку звука, снизу симметричнее */
+  overflow-y: auto;
+  align-items: center;
+}
+
+/* 🆕 Безопасное центрирование: auto-поля делят свободное место поровну,
+   а при переполнении становятся 0 — скролл начинается с верха */
+#screen-menu .menu-title {
+  margin-top: auto;
+}
+
+#screen-menu .menu-grid {
+  margin-bottom: auto;
+}
+
+.menu-title {
+  font-size: 26px;
+  color: var(--dark);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px 20px;
+  width: 100%;
+  max-width: 400px;
+  justify-content: center;
+}
+
+.menu-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.menu-preview:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 0 var(--dark);
+  background: var(--tray);
+}
+
+
+.tile-box {
+  width: 100%;
+  max-width: 120px;
+  aspect-ratio: 1 / 1;
+  background: var(--green);
+  border: 3px solid var(--dark);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+
+.menu-preview {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.menu-preview svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.tile-label {
+  margin-top: 10px;
+  font-size: 18px;
+  color: var(--dark);
+}
+
+.lock-icon {
+  font-size: 50px;
+}
+
+.star-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  font-size: 24px;
+  display: none;
+  animation: pop 0.4s ease;
+}
+
+.star-badge.visible {
+  display: block;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0);
+  }
+
+  60% {
+    transform: scale(1.3);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (min-width: 900px) {
+  .menu-grid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 560px;
+  }
+}
+
+
+/* ============================================
+   ЭКРАН ПОБЕДЫ
+   ============================================ */
+.win-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(247, 247, 245, 0.88);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 20px;
+  text-align: center;
+}
+
+.win-overlay.visible {
+  display: flex;
+}
+
+.win-message {
+  font-size: 36px;
+  margin-bottom: 30px;
+  animation: pop 0.6s ease;
+  opacity: 100%;
+}
+
+.win-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  opacity: 100%;
+
+}
+
+.win-buttons button {
+  padding: 12px 20px;
+  font-size: 18px;
+  background: var(--green);
+  border: 2px solid var(--dark);
+  border-radius: 16px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.win-buttons button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 0 var(--dark);
+  background: var(--tray);
+}
+
+.win-buttons button:active {
+  transform: scale(0.95);
+}
+
+/* ============================================
+   ЭКРАН ПОДТВЕРЖДЕНИЯ
+   ============================================ */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(247, 247, 245, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.confirm-overlay.hidden {
+  display: none;
+}
+
+.confirm-box {
+  background: var(--tray);
+  border: 2px solid var(--dark);
+  border-radius: 20px;
+  padding: 24px;
+  max-width: 300px;
+  text-align: center;
+  box-shadow: 0 6px 0 var(--dark);
+}
+
+.confirm-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 0 8px;
+}
+
+.confirm-text {
+  font-size: 15px;
+  color: var(--dark);
+  margin: 0 0 20px;
+}
+
+.confirm-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.confirm-btn {
+  font-size: 17px;
+  padding: 10px 24px;
+  border-radius: 12px;
+  border: 3px solid var(--dark);
+  cursor: pointer;
+}
+
+.confirm-btn:active {
+  transform: scale(0.95);
+}
+
+.confirm-yes {
+  background: var(--wrong);
+}
+
+.confirm-no {
+  background: var(--correct);
+}
+
+.win-overlay,
+.confirm-overlay {
+  backdrop-filter: blur(3px);
+}
+
+/* ============================================
+   САЛЮТ
+   ============================================ */
+
+.firework {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 200;
+}
+
+/* ============================================
+   МОБИЛЬНАЯ АДАПТАЦИЯ
+   ============================================ */
+
+/* Телефоны (до 500px) */
+@media (max-width: 500px) {
+
+  /* Кнопки меньше */
+  .home-toggle,
+  .btn-back,
+  .music-toggle {
+    width: 44px;
+    height: 44px;
+  }
+
+  .home-toggle {
+    top: 10px;
+    left: 10px;
+  }
+
+  .btn-back {
+    top: 10px;
+    left: 62px;
+    font-size: 22px;
+  }
+
+  .music-toggle {
+    top: 10px;
+    right: 10px;
+  }
+
+  /* Меню */
+  .menu-title {
+    font-size: 22px;
+  }
+
+  .menu-grid {
+    gap: 15px;
+    max-width: 320px;
+  }
+
+  .tile-box {
+    max-width: 100px;
+    border-radius: 20px;
+  }
+
+  .tile-label {
+    font-size: 16px;
+  }
+
+  /* Экран победы */
+  .win-message {
+    font-size: 28px;
+  }
+
+  .win-buttons button {
+    padding: 10px 16px;
+    font-size: 16px;
+  }
+}
+
+/* Очень маленькие телефоны (до 360px) */
+@media (max-width: 360px) {
+
+  .home-toggle,
+  .btn-back,
+  .music-toggle {
+    width: 40px;
+    height: 40px;
+  }
+
+  .btn-back {
+    left: 54px;
+  }
+
+  .tools-panel {
+    left: 6px;
+    padding: 8px 6px;
+    gap: 8px;
+  }
+
+  .tool-btn {
+    width: 42px;
+    height: 42px;
+  }
+
+  .palette {
+    right: 6px;
+    top: 85px;
+    padding: 6px;
+    gap: 5px;
+  }
+
+  .color-swatch {
+    width: 34px;
+    height: 34px;
+  }
+
+  .painting-area {
+    padding: 65px 60px 20px 60px;
+  }
+
+  .menu-grid {
+    max-width: 280px;
+  }
+
+  .tile-box {
+    max-width: 90px;
+  }
+}
+
+/* Альбомная ориентация на телефонах */
+@media (max-height: 500px) and (orientation: landscape) {
+  .painting-area {
+    padding: 10px 80px 10px 70px;
+  }
+
+  .tools-panel {
+    left: 10px;
+    top: auto;
+    bottom: 10px;
+    transform: none;
+    flex-direction: row;
+  }
+
+  .palette {
+    right: 10px;
+    top: auto;
+    bottom: 10px;
+  }
+}
+
+/* Планшеты (501px - 768px) */
+@media (min-width: 501px) and (max-width: 768px) {
+  .painting-area {
+    padding: 80px 90px 20px 90px;
+  }
+
+  .tools-panel {
+    left: 15px;
+    padding: 12px 10px;
+    gap: 12px;
+  }
+
+  .tool-btn {
+    width: 50px;
+    height: 50px;
+  }
+
+  .palette {
+    right: 15px;
+    top: 100px;
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .color-swatch {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* ============ КУРСОР-УКАЗАТЕЛЬ НА ВСЁМ КЛИКАБЕЛЬНОМ ============ */
+[data-goto],
+[data-action],
+[data-tool],
+button,
+.menu-tile,
+.color-swatch,
+.done-btn {
+  cursor: pointer;
+}
+
+/* ============================================
+ЭКРАН ПОБЕДЫ НА МОБИЛКЕ: кнопки в столбик
+============================================ */
+@media (max-width: 500px) {
+  .win-buttons {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100%;
+  }
+
+  .win-buttons button {
+    width: 80% !important;
+    max-width: 260px !important;
+    text-align: center !important;
+  }
+}
+
+/* ============================================
+МОБИЛЬНАЯ РАСКЛАДКА — ЕДИНСТВЕННЫЙ ИСТОЧНИК ПРАВДЫ
+Портрет: полка внизу (инструменты+Готово над палитрой)
+Ландшафт: колонки по бокам
+============================================ */
+.screen .palette {
+  display: none;
+}
+
+/* живёт только #paletteGlobal */
+#dock,
+.dock-top {
+  display: contents;
+}
+
+/* если обёртка осталась в HTML */
+
+/* ---------- ПОРТРЕТ ≤500px ---------- */
+@media (max-width: 500px) and (orientation: portrait) {
+
+  .home-toggle,
+  .btn-back,
+  .music-toggle {
+    width: 40px;
+    height: 40px;
+  }
+
+  .home-toggle {
+    top: 8px;
+    left: 8px;
+  }
+
+  .btn-back {
+    top: 8px;
+    left: 52px;
+  }
+
+  .music-toggle {
+    top: 8px;
+    right: 8px;
+  }
+
+  .volume-slider {
+    width: 56px;
+  }
+
+  .home-toggle__icon,
+  .btn-back__icon,
+  .music-toggle__icon,
+  .tool__icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* Ряд 2 (низ): палитра во всю ширину, 6 колонок × 2 ряда, круги 40px.
+     Высота ровно 102px → кромка на 110px от низа */
+  .palette {
+    position: fixed;
+    left: 8px;
+    right: 8px;
+    top: auto;
+    bottom: 8px;
+    width: auto;
+    box-sizing: border-box;
+    z-index: 99;
+    display: grid;
+    grid-template-columns: repeat(6, 40px);
+    justify-content: space-between;
+    gap: 4px;
+    padding: 6px;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .color-swatch {
+    width: 40px;
+    height: 40px;
+    aspect-ratio: auto;
+    margin: 0;
+  }
+
+  /* Ряд 1: инструменты слева НАД палитрой (110 + 8 воздуха) */
+  .tools-panel {
+    position: fixed;
+    left: 8px;
+    right: auto;
+    top: auto;
+    bottom: 118px;
+    transform: none;
+    flex-direction: row;
+    gap: 6px;
+    padding: 6px 8px;
+    z-index: 100;
+  }
+
+  .tool-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* «Готово!» справа в том же ряду */
+  .done-btn {
+    position: fixed;
+    left: auto;
+    right: 8px;
+    top: auto;
+    bottom: 122px;
+    transform: none;
+    margin: 0;
+    padding: 8px 16px;
+    font-size: 16px;
+    border-radius: 14px;
+    z-index: 100;
+  }
+
+  .done-btn:active {
+    transform: scale(0.95);
+  }
+
+  /* Картинка: вся ширина, низ зарезервирован под оба ряда */
+  .painting-area {
+    padding: 56px 8px 190px 8px;
+  }
+
+  .painting-container {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+/* ---------- ЛАНДСКЕП-ТЕЛЕФОН (высота ≤500): колонки по бокам ---------- */
+@media (max-height: 500px) and (orientation: landscape) {
+
+  .home-toggle,
+  .btn-back,
+  .music-toggle {
+    width: 36px;
+    height: 36px;
+  }
+
+  .home-toggle {
+    top: 6px;
+    left: 6px;
+  }
+
+  .btn-back {
+    top: 6px;
+    left: 46px;
+  }
+
+  .music-toggle {
+    top: 6px;
+    right: 6px;
+  }
+
+  .volume-slider {
+    width: 48px;
+  }
+
+  .home-toggle__icon,
+  .btn-back__icon,
+  .music-toggle__icon,
+  .tool__icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .tools-panel {
+    position: fixed;
+    left: 6px;
+    right: auto;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+    flex-direction: column;
+    gap: 6px;
+    padding: 6px;
+    z-index: 100;
+  }
+
+  .tool-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .done-btn {
+    position: fixed;
+    left: 6px;
+    right: auto;
+    top: auto;
+    bottom: 8px;
+    transform: none;
+    margin: 0;
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 12px;
+    z-index: 100;
+  }
+
+  .done-btn:active {
+    transform: scale(0.95);
+  }
+
+  .palette {
+    position: fixed;
+    right: 6px;
+    left: auto;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+    width: auto;
+    max-height: none;
+    overflow: visible;
+    z-index: 99;
+    grid-template-columns: repeat(4, 30px);
+    column-gap: 5px;
+    row-gap: 5px;
+    padding: 6px;
+  }
+
+  .color-swatch {
+    width: 30px;
+    height: 30px;
+  }
+
+  .painting-area {
+    padding: 44px 52px 44px 52px;
+  }
+
+  .painting-container {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+/* Меню в один столбик на мобилке */
+@media (max-width: 500px) {
+  .menu-grid {
+    grid-template-columns: 1fr !important;
+    max-width: 160px !important;
+    gap: 16px !important;
+  }
+  .tile-box {
+    max-width: 140px !important;
+  }
+  .tile-label {
+    font-size: 16px;
+  }
+}
